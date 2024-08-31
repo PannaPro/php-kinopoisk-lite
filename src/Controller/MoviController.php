@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
-class MoviController
+use App\Kernel\Controller\Controller;
+use App\Kernel\View\View;
+
+class MoviController extends Controller
 {
     public function index(): void
     {
-        include_once APP_PATH . '/template/movies.php';
+        $this->view('movies');
     }
 }
