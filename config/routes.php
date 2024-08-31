@@ -2,7 +2,7 @@
 
 use App\Controller\HomeController;
 use App\Controller\MoviController;
-use App\Router\Route;
+use App\Kernel\Router\Route;
 
 return [
     Route::get('/home', [HomeController::class, 'index']),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Router;
+namespace App\Kernel\Router;
 
 class Router
 {
@@ -57,6 +57,11 @@ class Router
         return require_once APP_PATH . '/config/routes.php';
     }
 
+    /**
+     * @param string $uri
+     * @param string $method
+     * @return Route|false
+     */
     private function findRoute(string $uri, string $method): Route|false
     {
         if (!isset($this->routes[$method][$uri])) {
