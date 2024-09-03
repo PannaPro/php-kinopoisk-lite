@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Kernel\Controller\Controller;
+use App\Kernel\Http\Redirect;
+use App\Kernel\Http\Request;
 use App\Kernel\Validator\Validator;
 
 class MoviController extends Controller
@@ -17,15 +19,15 @@ class MoviController extends Controller
         $this->view('pages/movies/add');
     }
 
-    public function create(): void
+    public function create()
     {
-
         $validation = $this->request()->validate([
             'filmname' => ['require', 'min:3', 'max:255'],
         ]);
 
         if (!$validation) {
-            dd($this->request()->errors());
+            $this->redirect('movies/add');
         }
+        dd($this->session());
     }
 }
