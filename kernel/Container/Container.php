@@ -30,11 +30,11 @@ class Container
     {
         $this->request = Request::createFromGlobal();
 
-        $this->view = new View();
-
         $this->redirect = new Redirect();
 
         $this->session = new Session();
+
+        $this->view = new View($this->session);
 
         $this->validator = new Validator();
 

@@ -22,12 +22,16 @@ class MoviController extends Controller
     public function create()
     {
         $validation = $this->request()->validate([
-            'filmname' => ['require', 'min:3', 'max:255'],
+            'filmname' => ['required', 'min:3', 'max:255'],
         ]);
 
         if (!$validation) {
+            foreach ($this->request()->errors() as $key => $errors) {
+                $this->session()->set($key, $errors);
+            }
             $this->redirect('movies/add');
         }
-        dd($this->session());
+
+        echo 'Created successfully';
     }
 }

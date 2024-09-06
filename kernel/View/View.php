@@ -2,10 +2,17 @@
 
 namespace App\Kernel\View;
 
+use App\Kernel\Session\Session;
 use Exception;
 
 class View
 {
+    public function __construct(
+        private Session $session
+    )
+    {
+    }
+
     /**
      * @param string $name
      * @throws Exception
@@ -18,9 +25,7 @@ class View
             throw new Exception("View $name not found");
         }
 
-        extract([
-            'view' => $this
-        ]);
+        extract($this->defaultData());
 
         include_once $viewPath;
     }
@@ -36,5 +41,13 @@ class View
         }
 
         include_once $componentPath;
+    }
+
+    private function defaultData(): array
+    {
+        return [
+            'view' => $this,
+            'session' => $this->session
+        ];
     }
 }
