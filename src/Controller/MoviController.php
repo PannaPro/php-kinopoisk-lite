@@ -3,9 +3,14 @@
 namespace App\Controller;
 
 use App\Kernel\Controller\Controller;
+use App\Kernel\Database\DatabaseInterface;
 
 class MoviController extends Controller
 {
+    public function __construct()
+    {
+    }
+
     public function index(): void
     {
         $this->view('pages/movies/movies');
@@ -16,10 +21,10 @@ class MoviController extends Controller
         $this->view('pages/movies/add');
     }
 
-    public function create()
+    public function create(): void
     {
         $validation = $this->request()->validate([
-            'filmname' => ['required', 'min:3', 'max:255'],
+            'name' => ['required', 'min:3', 'max:255'],
         ]);
 
         if (!$validation) {
@@ -28,7 +33,11 @@ class MoviController extends Controller
             }
             $this->redirect('movies/add');
         }
+        $id = $this->db()->insert('movies', [
+            'name' => $this->request()->input('name'),
+            'genre' => $this->request()->input('genre')
+        ]);
 
-        echo 'Created successfully';
+        $this->redirect('movies/add');
     }
 }

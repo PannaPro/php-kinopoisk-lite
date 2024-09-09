@@ -7,10 +7,10 @@
     <h1>Add films</h1>
 
     <form action="/movies/add" method="post">
-        <label for="filmname">Film name:</label><br>
-        <input type="text" id="filmname" name="filmname"><br>
-        <?php if ($session->get('filmname')) { ?>
-                <?php foreach ($session->getFlash('filmname') as $error) { ?>
+        <label for="name">Film name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <?php if ($session->get('name')) { ?>
+                <?php foreach ($session->getFlash('name') as $error) { ?>
                 <p style="color: red; font-size: small"> <?php echo $error ?> </p>
                 <?php } ?>
         <?php } ?>
