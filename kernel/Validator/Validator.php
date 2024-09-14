@@ -2,10 +2,16 @@
 
 namespace App\Kernel\Validator;
 
+use App\Kernel\Database\DatabaseInterface;
+
 class Validator implements ValidatorInterface
 {
     private array $data;
     private array $errors = [];
+
+    public function __construct(private DatabaseInterface $db)
+    {
+    }
 
     public function validate(array $date, array $rules): bool
     {
@@ -54,6 +60,16 @@ class Validator implements ValidatorInterface
             case 'max':
                 if (strlen($value) > $ruleValue) {
                     return "Field $key must be at less {$ruleValue} characters long";
+                }
+                break;
+            case 'email':
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    return "Field $key must be type of email";
+                }
+                break;
+            case 'unique':
+                if ($this->db->findBy('user', [$key => $this->data[$key]])) {
+                    return "Field $key must be unique in database";
                 }
                 break;
         }

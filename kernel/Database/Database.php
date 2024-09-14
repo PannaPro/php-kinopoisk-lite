@@ -39,6 +39,25 @@ class Database implements DatabaseInterface
         return $this->pdo->lastInsertId();
     }
 
+    /** внедрить расширенный поиск по нескольким полям */
+    public function findBy(string $table, array $data): bool
+    {
+        if (count($data) !== 1) {
+            throw new \InvalidArgumentException("Data array must contain exactly one key-value pair.");
+        }
+
+        $column = key($data);
+        $value = reset($data);
+
+        $sql = "SELECT $column FROM $table WHERE $column = :value";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute(['value' => $value]);
+
+        return (bool)$stmt->fetch();
+    }
+
     private function connect(): void
     {
         $driver = $this->config->get('database.driver');
