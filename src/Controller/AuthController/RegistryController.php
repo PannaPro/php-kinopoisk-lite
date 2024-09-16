@@ -14,7 +14,7 @@ class RegistryController extends Controller
     public function registry(): void
     {
         $validation = $this->request()->validate([
-            'email' => ['required', 'email', 'unique'],
+            'email' => ['required', 'email', 'unique:user'],
             'password' => ['required', 'min:8'],
         ]);
 

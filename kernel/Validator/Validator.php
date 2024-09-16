@@ -68,7 +68,7 @@ class Validator implements ValidatorInterface
                 }
                 break;
             case 'unique':
-                if ($this->db->findBy('user', [$key => $this->data[$key]])) {
+                if ($this->db->findBy($ruleValue, [$key => $this->data[$key]])) {
                     return "Field $key must be unique in database";
                 }
                 break;
