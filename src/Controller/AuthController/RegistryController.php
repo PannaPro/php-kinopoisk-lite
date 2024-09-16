@@ -14,7 +14,7 @@ class RegistryController extends Controller
     public function registry(): void
     {
         $validation = $this->request()->validate([
-            'email' => ['required', 'email', 'unique:user'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8'],
         ]);
 
@@ -25,11 +25,11 @@ class RegistryController extends Controller
             $this->redirect('registry');
         }
 
-        $this->db()->insert('user', [
+        $this->db()->insert('users', [
             'email' => $this->request()->input('email'),
             'password' => password_hash($this->request()->input('password'), PASSWORD_DEFAULT)
         ]);
 
-        $this->redirect('home');
+        $this->redirect('login');
     }
 }

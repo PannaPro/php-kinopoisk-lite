@@ -39,6 +39,25 @@ class Database implements DatabaseInterface
         return $this->pdo->lastInsertId();
     }
 
+    public function first(string $table, array $conditions = []): ?array
+    {
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "SELECT * FROM $table $where LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute($conditions);
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
     /** внедрить расширенный поиск по нескольким полям */
     public function findBy(string $table, array $data): bool
     {
@@ -55,7 +74,7 @@ class Database implements DatabaseInterface
 
         $stmt->execute(['value' => $value]);
 
-        return (bool)$stmt->fetch();
+        return (bool)$stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     private function connect(): void

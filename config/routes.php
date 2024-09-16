@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\AuthController\LoginController;
 use App\Controller\AuthController\RegistryController;
 use App\Controller\HomeController;
 use App\Controller\MoviController;
@@ -13,4 +14,6 @@ return [
 
     Route::get('/registry', [RegistryController::class, 'index']),
     Route::post('/registry', [RegistryController::class, 'registry']),
+    Route::get('/login', [LoginController::class, 'index']),
+    Route::post('/login', [LoginController::class, 'login']),
 ];
