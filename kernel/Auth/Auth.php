@@ -57,8 +57,8 @@ class Auth implements AuthInterface
         if ($user) {
             return new User(
                 $user['id'],
-                $user['email'],
-                $user['password'],
+                $this->username(),
+                $this->password(),
             );
         }
 

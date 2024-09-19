@@ -1,5 +1,5 @@
 <?php /** @var App\Kernel\Auth\AuthInterface $auth */
-$user = $auth?->user();
+$user = $auth->user();
 ?>
 
 <header>
