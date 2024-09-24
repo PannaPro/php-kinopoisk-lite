@@ -23,6 +23,12 @@ class MoviController extends Controller
 
     public function create(): void
     {
+        $file = $this->request()->file('image');
+
+        $filePath = $file->move('movies');
+
+        //Storage->url('movies/test.jpg');
+
         $validation = $this->request()->validate([
             'name' => ['required', 'min:3', 'max:255'],
         ]);
