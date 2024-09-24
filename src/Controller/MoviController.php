@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Kernel\Controller\Controller;
-use App\Kernel\Database\DatabaseInterface;
 
 class MoviController extends Controller
 {
@@ -27,7 +26,7 @@ class MoviController extends Controller
 
         $filePath = $file->move('movies');
 
-        //Storage->url('movies/test.jpg');
+        $this->storage()->url($filePath);
 
         $validation = $this->request()->validate([
             'name' => ['required', 'min:3', 'max:255'],
@@ -39,6 +38,7 @@ class MoviController extends Controller
             }
             $this->redirect('movies/add');
         }
+
         $id = $this->db()->insert('movies', [
             'name' => $this->request()->input('name'),
             'genre' => $this->request()->input('genre')
