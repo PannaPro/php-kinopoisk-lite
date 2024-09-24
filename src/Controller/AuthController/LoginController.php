@@ -20,4 +20,11 @@ class LoginController extends Controller
 
         $this->redirect('home');
     }
+
+    public function logout(): void
+    {
+        $this->auth()->logout();
+
+        $this->redirect('/login');
+    }
 }
