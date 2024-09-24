@@ -8,6 +8,7 @@ class Route implements RouteInterface
         private string $uri,
         private string $method,
         private $action,
+        private array $middlewares = []
     )
     {
     }
@@ -15,21 +16,23 @@ class Route implements RouteInterface
     /**
      * @param $uri
      * @param $action
+     * @param array $middlewares
      * @return static
      */
-    public static function get($uri, $action): static
+    public static function get($uri, $action, $middlewares = []): static
     {
-        return new static($uri, 'GET', $action);
+        return new static($uri, 'GET', $action, $middlewares);
     }
 
     /**
      * @param $uri
      * @param $action
+     * @param array $middlewares
      * @return static
      */
-    public static function post($uri, $action): static
+    public static function post($uri, $action, $middlewares = []): static
     {
-        return new static($uri, 'POST', $action);
+        return new static($uri, 'POST', $action, $middlewares);
     }
 
     /**
@@ -54,5 +57,21 @@ class Route implements RouteInterface
     public function getAction(): mixed
     {
         return $this->action;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMiddlewares(): bool
+    {
+        return !empty($this->middlewares);
+    }
+
+    /**
+     * @return array
+     */
+    public function getMiddlewares(): array
+    {
+        return $this->middlewares;
     }
 }
