@@ -42,7 +42,30 @@ class Validator implements ValidatorInterface
         return $this->errors;
     }
 
-    public function validateRule(string $key, string $ruleName, string $ruleValue = null): false|string
+    /**
+     * Validate a field against a specific validation rule.
+     *
+     * Available validation rules:
+     *
+     * - `required`: Ensures the field is not empty.
+     * - `min`: Ensures the field has a minimum length. Requires an integer value as the second parameter.
+     * - `max`: Ensures the field has a maximum length. Requires an integer value as the second parameter.
+     * - `email`: Ensures the field contains a valid email address.
+     * - `unique`: Ensures the field value is unique in the database. Requires the table name as the second parameter.
+     * - `confirmed`: Ensures the field has a matching `{field}_confirmation` field in the data.
+     *
+     * @param string $key The name of the field to validate.
+     * @param string $ruleName The validation rule to apply.
+     *     - `required`
+     *     - `min`: Requires `$ruleValue` as the minimum length.
+     *     - `max`: Requires `$ruleValue` as the maximum length.
+     *     - `email`
+     *     - `unique`: Requires `$ruleValue` as the database table name.
+     *     - `confirmed`: Checks if the field matches `{key}_confirmation`.
+     * @param string|null $ruleValue The additional value for the rule (used with `min`, `max`, `unique`).
+     * @return false|string Returns `false` if the validation passes, or an error message string if it fails.
+     */
+    private function validateRule(string $key, string $ruleName, string $ruleValue = null): false|string
     {
         $value = $this->data[$key];
 
@@ -68,8 +91,13 @@ class Validator implements ValidatorInterface
                 }
                 break;
             case 'unique':
-                if ($this->db->findBy($ruleValue, [$key => $this->data[$key]])) {
+                if ($this->db->findBy($ruleValue, [$key => $value])) {
                     return "Field $key must be unique in database";
+                }
+                break;
+            case 'confirmed':
+                if ($value !== $this->data["{$key}_confirmation"]) {
+                    return "Field $key must be confirmed";
                 }
                 break;
         }

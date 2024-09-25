@@ -67,7 +67,7 @@ class Auth implements AuthInterface
 
     public function table(): string
     {
-        return $this->config->get('auth.table', 'users');
+        return $this->config->get('auth.table', 'user');
     }
 
     public function username(): string

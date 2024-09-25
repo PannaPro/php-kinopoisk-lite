@@ -8,14 +8,16 @@ class RegistryController extends Controller
 {
     public function index(): void
     {
-        $this->view('pages/auth/registry');
+        $this->view('register');
     }
 
     public function registry(): void
     {
         $validation = $this->request()->validate([
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'min:8'],
+            'name' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'unique:user'],
+            'password' => ['required', 'min:8', 'confirmed'],
+            'password_confirmation' => ['required'],
         ]);
 
         if (!$validation) {
@@ -25,11 +27,12 @@ class RegistryController extends Controller
             $this->redirect('registry');
         }
 
-        $this->db()->insert('users', [
+        $this->db()->insert('user', [
+            'name' => $this->request()->input('name'),
             'email' => $this->request()->input('email'),
             'password' => password_hash($this->request()->input('password'), PASSWORD_DEFAULT)
         ]);
 
-        $this->redirect('login');
+        $this->redirect('/');
     }
 }

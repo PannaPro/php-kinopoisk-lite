@@ -39,7 +39,14 @@ class Router implements RouterInterface
         $routes = $this->getRoutes();
 
         foreach ($routes as $route) {
-            $this->routes[$route->getMethod()][$route->getUri()] = $route;
+            $method = $route->getMethod();
+            $uri = $route->getUri();
+
+            if (isset($this->routes[$method][$uri])) {
+                trigger_error("Duplicate route detected: [$method] $uri is already registered.", E_USER_WARNING);
+            }
+
+            $this->routes[$method][$uri] = $route;
         }
     }
 
