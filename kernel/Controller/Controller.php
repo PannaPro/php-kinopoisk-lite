@@ -10,6 +10,7 @@ use App\Kernel\Session\SessionInterface;
 use App\Kernel\Storage\StorageInterface;
 use App\Kernel\View\View;
 use App\Kernel\View\ViewInterface;
+use Exception;
 
 abstract class Controller
 {
@@ -50,12 +51,13 @@ abstract class Controller
 
     /**
      * @param string $name
+     * @param array $data
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
-    public function view(string $name): void
+    public function view(string $name, array $data = []): void
     {
-        $this->view->page($name);
+        $this->view->page($name, $data);
     }
 
     /**

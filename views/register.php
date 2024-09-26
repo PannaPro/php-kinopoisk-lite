@@ -7,7 +7,7 @@
 
 <main>
     <div class="container">
-        <h3 class="mt-3">Регистрация</h3>
+        <h3 class="mt-3 standart-font">Регистрация</h3>
         <hr>
     </div>
     <div class="container d-flex justify-content-center">

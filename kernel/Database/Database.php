@@ -39,6 +39,19 @@ class Database implements DatabaseInterface
         return $this->pdo->lastInsertId();
     }
 
+    public function find(string $table, array $conditions = []): array
+    {
+        $sql = "SELECT * FROM $table";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute($conditions);
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function first(string $table, array $conditions = []): ?array
     {
         $where = '';
@@ -59,23 +72,57 @@ class Database implements DatabaseInterface
     }
 
     /** внедрить расширенный поиск по нескольким полям */
-    public function findBy(string $table, array $data): bool
+    public function findBy(string $table, array $conditions = []): array
     {
-        if (count($data) !== 1) {
-            throw new \InvalidArgumentException("Data array must contain exactly one key-value pair.");
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
 
-        $column = key($data);
-        $value = reset($data);
-
-        $sql = "SELECT $column FROM $table WHERE $column = :value";
+        $sql = "SELECT * FROM $table $where";
 
         $stmt = $this->pdo->prepare($sql);
 
-        $stmt->execute(['value' => $value]);
+        $stmt->execute($conditions);
 
-        return (bool)$stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public function remove(string $table, array $conditions = []): void
+    {
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "DELETE FROM $table $where";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute($conditions);
+    }
+
+    public function update(string $table, array $data, array $conditions = []): void
+    {
+        $fields = array_keys($data);
+
+        $set = implode(', ', array_map(fn ($field) => "$field = :$field", $fields));
+
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "UPDATE $table SET $set $where";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute(array_merge($data, $conditions));
+    }
+
 
     private function connect(): void
     {

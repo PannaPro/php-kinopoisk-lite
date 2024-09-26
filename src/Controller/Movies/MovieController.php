@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Movies;
 
 use App\Kernel\Controller\Controller;
 
-class MoviController extends Controller
+class MovieController extends Controller
 {
     public function __construct()
     {

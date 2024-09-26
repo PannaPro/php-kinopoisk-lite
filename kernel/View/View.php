@@ -17,9 +17,10 @@ class View implements ViewInterface
 
     /**
      * @param string $name
+     * @param array $data
      * @throws Exception
      */
-    public function page(string $name): void
+    public function page(string $name, array $data = []): void
     {
         $viewPath = APP_PATH . "/views/$name.php";
 
@@ -27,9 +28,9 @@ class View implements ViewInterface
             throw new Exception("View $name not found");
         }
 
-        extract($this->defaultData());
+        extract(array_merge($this->defaultData(), $data));
 
-        include_once $viewPath;
+        include $viewPath;
     }
 
     public function component(string $name): void
