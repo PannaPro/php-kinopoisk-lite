@@ -11,7 +11,7 @@
         <hr>
     </div>
     <div class="container d-flex justify-content-center">
-        <form action="/admin/category/add" method="post" class="d-flex flex-column justify-content-center w-50 gap-2 mt-5 mb-5">
+        <form action="/admin/categories/add" method="post" class="d-flex flex-column justify-content-center w-50 gap-2 mt-5 mb-5">
             <h4 class="mt-3 standart-font text-center">Добавить категорию фильмов</h4>
 
             <div class="row g-2">

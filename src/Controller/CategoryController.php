@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Movies;
+namespace App\Controller;
 
 use App\Kernel\Controller\Controller;
 use App\Service\CategoryService;
@@ -10,9 +10,9 @@ class CategoryController extends Controller
 
     private $service;
 
-    public function index(): void
+    public function add(): void
     {
-        $this->view('admin/category/index');
+        $this->view('admin/category/add');
     }
 
     public function create(): void

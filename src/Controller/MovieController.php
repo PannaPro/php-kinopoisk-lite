@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Movies;
+namespace App\Controller;
 
 use App\Kernel\Controller\Controller;
 
@@ -10,14 +10,9 @@ class MovieController extends Controller
     {
     }
 
-    public function index(): void
-    {
-        $this->view('pages/movies/movies');
-    }
-
     public function add(): void
     {
-        $this->view('pages/movies/add');
+        $this->view('admin/movie/add');
     }
 
     public function create(): void
