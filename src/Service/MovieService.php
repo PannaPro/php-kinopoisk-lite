@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Movie;
 use App\Kernel\Database\DatabaseInterface;
 use App\Kernel\Http\Request;
 
@@ -11,6 +12,36 @@ class MovieService
         private DatabaseInterface $db,
     )
     {
+    }
+
+    /**
+     * @return Movie[]
+     */
+    public function all(): array
+    {
+        $movies = $this->db->find('movies');
+
+        $movies = array_map(function ($movie) {
+            if ($movie['category_id']) {
+               $category = $this->db->findBy('categories', ['id' => $movie['category_id']]);
+            }
+
+            if ($movie['image_file_id']) {
+                $file = $this->db->findBy('files', ['id' => $movie['image_file_id']]);
+            }
+
+            return new Movie(
+                $movie['id'],
+                $movie['name'],
+                $movie['description'],
+                $movie['director'],
+                $movie['duration'],
+                $category ?? null,
+                $file['url'] ?? null,
+            );
+        }, $movies);
+
+        return $movies;
     }
 
     public function create(Request $request, string $filePath): void
