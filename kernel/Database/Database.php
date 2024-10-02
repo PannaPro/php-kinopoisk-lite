@@ -33,10 +33,10 @@ class Database implements DatabaseInterface
         try {
             $stmt->execute($data);
         } catch (\PDOException $exception) {
-            return false;
+            throw new \Exception($exception->getMessage());
         }
 
-        return $this->pdo->lastInsertId();
+        return $this->pdo->lastInsertId() ?? false;
     }
 
     public function find(string $table, array $conditions = []): array

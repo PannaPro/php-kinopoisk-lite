@@ -11,7 +11,7 @@ class AdminController extends Controller
     {
         $service = new CategoryService($this->db());
 
-        $categories = $service->categoriesList();
+        $categories = $service->all();
 
         $this->view('admin/index', ['categories' => $categories]);
     }

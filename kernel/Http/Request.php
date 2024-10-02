@@ -62,6 +62,35 @@ class Request implements RequestInterface
         return $this->post[$key] ?? $this->get[$key] ?? $default;
     }
 
+    public function getContent(): array
+    {
+        return array_filter($this->post ?? [], function ($value) {
+            return !(is_string($value) && trim($value) === '');
+        });
+    }
+
+    /**
+     * Retrieves and filters the content of an uploaded file by the specified key.
+     *
+     * This method checks if a file exists under the provided key in the files array.
+     * If found, it returns the file's data, filtering out empty or whitespace-only values.
+     * If the key does not exist, an empty array is returned.
+     *
+     * @param string $key The key identifying the uploaded file in the files array.
+     * @return array The filtered data of the uploaded file, or an empty array if the file doesn't exist.
+     */
+    public function getFileContent(string $key): array
+    {
+        if (!isset($this->files[$key])) {
+            return [];
+        }
+
+        return array_filter($this->files[$key], function ($value) {
+            return !(is_string($value) && trim($value) === '');
+        });
+    }
+
+
     /**
      * @param string $key
      * @return UploadedFileInterface|null

@@ -28,7 +28,7 @@ class CategoryService
     /**
      * @return Category[]
      */
-    public function categoriesList(): array
+    public function all(): array
     {
         $categories = $this->db->find('categories');
 
